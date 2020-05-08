@@ -1,0 +1,25 @@
+{
+  "ReRoutes": [
+    {
+      "DownstreamPathTemplate": "/AdminService/{catchAll}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+
+          "Port": 52406
+        }
+
+
+      ],
+      "UpstreamPathTemplate": "/Admin/{catchAll}"
+
+    },
+    
+  ],
+  "GlobalConfiguration": {
+    "BaseUrl": "http://localhost:59011"
+  }
+
+
+}
