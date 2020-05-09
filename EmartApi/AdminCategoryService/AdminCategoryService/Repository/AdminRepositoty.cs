@@ -17,9 +17,19 @@ namespace AdminCategoryService.Repository
         {
             try
             {
-                _context.Add(obj);
-                await _context.SaveChangesAsync();
-                return true;
+                Category cat = new Category();
+                if(obj!=null)
+                {
+                    cat.Cid = obj.Cid;
+                    cat.Cname = obj.Cname;
+                    cat.Cdetails = obj.Cdetails;
+                }
+                _context.Add(cat);
+               var res= await _context.SaveChangesAsync();
+                if (res > 0)
+                    return true;
+                else
+                    return false;
             }
             catch (Exception ex)
             {

@@ -5,14 +5,18 @@
             <th>UserName</th>
             <th>noforders</th>
             <th>noOffailedorders</th>
-                <th>Block/UnBlock</th>
+                <th>Block</th>
         </tr>
         <tr id="r" *ngFor="let item of users">
            <td>{{item.username}}</td>
            <td>{{item.nooforders}}</td>
            <td>{{item.failedorders}}</td>
-           <td><button class="btn btn-danger" type="button"   >Block</button>
-            <button class="btn btn-primary" type="button"   >UnBlock</button>
+           <td>
+          
+            <label class="switch"><input type="checkbox"> <span class="slider round"></span> </label>
+           
+          
+          
         </td>
           
         </tr>

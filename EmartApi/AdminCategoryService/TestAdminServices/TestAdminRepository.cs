@@ -1,5 +1,6 @@
 ﻿using AdminCategoryService.Entities;
 using AdminCategoryService.Repository;
+using Microsoft.AspNetCore.DataProtection.KeyManagement;
 using Moq;
 using NUnit.Framework;
 using System;
@@ -29,9 +30,7 @@ namespace TestAdminServices
         //Testing Add Category Success
         [Test]
         [Description("get category")]
-        [TestCase(711, "electronics", "electric gadgets")]
-        [TestCase(712, "clothings", "Wholesale")]
-        [TestCase(713, "HomeNeeds", "All home needies")]
+        [TestCase(342, "HomeNeeds", "All home needies")]
         public async Task TestAddCategory_success(int cid, string cname, string cdetails)
         {
             try
@@ -267,10 +266,10 @@ namespace TestAdminServices
         {
             try
             {
-                var cId = 450;
+                var cId = 555;
                 var cName = "books";
                 var CDetail = "all books";
-                var cat = new Category { Cid = cId, Cname = cName, Cdetails = CDetail };
+                var cat = new Category{ Cid = cId, Cname = cName, Cdetails = CDetail };
                 var mock = new Mock<IAdminRepository>();
                 mock.Setup(x => x.AddCategory(cat));
                 var result = mock.Setup(x => x.getCategoryid(cat.Cid));
@@ -304,7 +303,7 @@ namespace TestAdminServices
         }
         //Testing update subcategory
         [Test]
-        [TestCase(10, 2, "def", "pen", 4)]
+       // [TestCase(10, 2, "def", "pen", 4)]
         [TestCase(11, 1, "lkj", "cellopens", 5)]
         [TestCase(12, 1, "dsa", "butter", 3)]
         [Description("update subCategory")]
@@ -321,6 +320,42 @@ namespace TestAdminServices
                 SubCategory subcat1 = _repo.getsubcategorybyid(Subid);
                 Assert.AreSame(subcat, subcat1);
 
+
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.InnerException.Message);
+            }
+        }
+        //Mock Testing of Updatesubcategory
+        [Test]
+        public async Task UpdateSubCategory_mockTest()
+        {
+            try
+            {
+                SubCategory sub = new SubCategory() {   Subid=1,Subname = "pen", Cid = 1, Gst = 4, Sdetails = "def" };
+                var mock = new Mock<IAdminRepository>();
+                mock.Setup(x => x.updatesubcategory(sub)).ReturnsAsync(true);
+                var result = await _repo.updatesubcategory(sub);
+                Assert.AreEqual(true,result);
+
+            }
+            catch(Exception ex)
+            {
+                Assert.Fail(ex.InnerException.Message);
+            }
+        }
+        //Mock Testing of Updatesubcategory
+        [Test]
+        public async Task UpdateCategory_mockTest()
+        {
+            try
+            {
+               Category cat = new Category() {   Cid= 1, Cname= "fashion",  Cdetails = "menfashion" };
+                var mock = new Mock<IAdminRepository>();
+                mock.Setup(x => x.updatecategory(cat)).ReturnsAsync(true);
+                var result = await _repo.updatecategory(cat);
+                Assert.AreEqual(true, result);
 
             }
             catch (Exception ex)

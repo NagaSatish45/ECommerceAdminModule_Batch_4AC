@@ -3,8 +3,8 @@ namespace AdminCategoryService.Models
 {
     public class Seller
     {
-        public int sellerId;
-        public string sellerName;
-        public string kycAproval;
+        public int SellerId;
+        public string SellerName;
+        public string KycAproval;
     }
 }

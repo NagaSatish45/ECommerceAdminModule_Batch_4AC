@@ -21,11 +21,9 @@ namespace AdminCategoryService.Manager
         {
             try
             {
-                bool cat = await _repo.AddCategory(obj);
-                if (cat)
-                    return true;
-                else
-                    return false;
+                await _repo.AddCategory(obj);
+                  return true;
+                
             }
             catch (Exception ex)
             {
