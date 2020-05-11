@@ -34,8 +34,11 @@ namespace AdminCategoryService.Manager
 
         public async Task<bool> AddSubcategory(SubCategory obj)
         {
-               await _repo.AddSubcategory(obj);
-                    return true;
+               var x= await _repo.AddSubcategory(obj);
+            if (x)
+                return true;
+            else
+                return false;
            
         }
 

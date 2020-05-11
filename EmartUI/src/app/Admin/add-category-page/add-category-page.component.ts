@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder,Validators} from '@angular/forms';
 import { Category } from 'src/app/Models/category';
 import { AdminActivitiesService } from 'src/app/Services/admin-activities.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-category-page',
@@ -12,7 +13,7 @@ export class AddCategoryPageComponent implements OnInit {
   addcategoryform:FormGroup;
   submitted=false;
   category:Category;
-  constructor(private formbuilder:FormBuilder,private service:AdminActivitiesService) { }
+  constructor(private formbuilder:FormBuilder,private service:AdminActivitiesService,private route:Router) { }
 
   ngOnInit(){
     this.addcategoryform=this.formbuilder.group({
@@ -45,5 +46,7 @@ export class AddCategoryPageComponent implements OnInit {
      
     }
 
-}
+  }
+ 
+
 }

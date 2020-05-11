@@ -11,6 +11,8 @@ import { HttpClientModule} from '@angular/common/http'
 import { BuyerBlockUnblockPageComponent } from './Admin/buyer-block-unblock-page/buyer-block-unblock-page.component';
 import { SellerBlockUnblockPageComponent } from './Admin/seller-block-unblock-page/seller-block-unblock-page.component';
 import { LandingpageComponent } from './Admin/landingpage/landingpage.component';
+import { ViewCategoryComponent } from './Admin/view-category/view-category.component';
+import { ViewSubCategoryComponent } from './Admin/view-sub-category/view-sub-category.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +22,9 @@ import { LandingpageComponent } from './Admin/landingpage/landingpage.component'
     AddSubCategoryPageComponent,
     BuyerBlockUnblockPageComponent,
     SellerBlockUnblockPageComponent,
-    LandingpageComponent
+    LandingpageComponent,
+    ViewCategoryComponent,
+    ViewSubCategoryComponent
    
   ],
   imports: [

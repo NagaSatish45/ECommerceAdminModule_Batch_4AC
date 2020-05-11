@@ -6,6 +6,8 @@ import { AddSubCategoryPageComponent } from './Admin/add-sub-category-page/add-s
 import { BuyerBlockUnblockPageComponent } from './Admin/buyer-block-unblock-page/buyer-block-unblock-page.component';
 import { SellerBlockUnblockPageComponent } from './Admin/seller-block-unblock-page/seller-block-unblock-page.component';
 import { LandingpageComponent } from './Admin/landingpage/landingpage.component';
+import { ViewCategoryComponent } from './Admin/view-category/view-category.component';
+import { ViewSubCategoryComponent } from './Admin/view-sub-category/view-sub-category.component';
 
 
 const routes: Routes = [
@@ -13,6 +15,8 @@ const routes: Routes = [
   {path:'',redirectTo:'login-page',pathMatch:'full'},
   {path:'landingpage',component:LandingpageComponent,children:[
   {path:'add-category-page',component:AddCategoryPageComponent},
+  {path:'view-category',component:ViewCategoryComponent},
+  {path:'view-sub-category',component:ViewSubCategoryComponent},
   {path:'add-sub-category-page',component:AddSubCategoryPageComponent},
   {path:'buyer-block-unblock-page',component:BuyerBlockUnblockPageComponent},
   {path:'seller-block-unblock-page',component:SellerBlockUnblockPageComponent}

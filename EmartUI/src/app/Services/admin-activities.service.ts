@@ -55,7 +55,7 @@ export class AdminActivitiesService {
   }
   public GetAllSubCategories():Observable<SubCategory[]>
   {
-    return this.http.get<SubCategory[]>(this.url+'GetSubCategory')
+    return this.http.get<SubCategory[]>(this.url+'GetAllSubCategory')
   }
   public GetAllSellers():Observable<Seller[]>
   {

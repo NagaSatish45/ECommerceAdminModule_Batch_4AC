@@ -30,10 +30,15 @@ namespace AdminCategoryService.Controllers
             [Route("AddCategory")]
             public async Task<IActionResult> Addcategory(Category obj)
             {
-
-                await _manager.AddCategory(obj);
+               
+               var x = await _manager.AddCategory(obj);
+            if (x)
+            {
                 return Ok("Category Added");
-                throw new Exception("Exception while adding  the categories to the storage.");
+            }
+            else
+                return null;
+           throw new Exception("Exception while adding  the categories to the storage.");
 
             }
 
@@ -45,9 +50,14 @@ namespace AdminCategoryService.Controllers
             [Route("AddSubCategory")]
             public async Task<IActionResult> Addsubcategory(SubCategory obj)
             {
-                await _manager.AddSubcategory(obj);
-                return Ok("SubCategory Added");
-                throw new Exception("Exception while adding the subcategory  to the storage.");
+                    bool x= await _manager.AddSubcategory(obj);
+            if (x)
+            {
+                return Ok("Category Added");
+            }
+            else
+                return null;
+            throw new Exception("Exception while adding the subcategory  to the storage.");
 
 
             }
@@ -87,7 +97,7 @@ namespace AdminCategoryService.Controllers
             // </summary>
             [HttpGet]
             [Route("GetAllCategory")]
-            public IActionResult Get()
+            public IActionResult GetAllCategories()
             {
 
 
