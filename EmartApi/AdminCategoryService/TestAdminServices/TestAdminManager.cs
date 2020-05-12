@@ -1,5 +1,6 @@
 ﻿using AdminCategoryService.Entities;
 using AdminCategoryService.Manager;
+using AdminCategoryService.Models;
 using AdminCategoryService.Repository;
 using Moq;
 using NUnit.Framework;
@@ -28,20 +29,19 @@ namespace TestAdminServices
         //Testing Add Category Success
         [Test]
         [Description("get category")]
-        [TestCase(320, "electronics", "electric gadgets")]
-        [TestCase(330, "clothings", "Wholesale")]
-        [TestCase(340, "HomeNeeds", "All home needies")]
+        [TestCase(903, "electronics", "electric gadgets")]
+        [TestCase(904  , "clothings", "Wholesale")]
+        [TestCase(905, "HomeNeeds", "All home needies")]
         public async Task TestAddCategory_success(int cid, string cname, string cdetails)
         {
             try
             {
-                await _manager.AddCategory(new Category()
-                {
-                    Cid = cid,
-                    Cname = cname,
-                    Cdetails = cdetails,
-                });
-                var x = _manager.getCategoryid(cid);
+                CategoryModel cat = new CategoryModel();
+                cat.Cid = cid;
+                cat.Cname = cname;
+                cat.Cdetails = cdetails;
+                await _manager.AddCategory(cat);
+                var x = _manager.getCategoryid(cat.Cid);
                 Assert.NotNull(x);
             }
             catch (Exception ex)
@@ -55,14 +55,14 @@ namespace TestAdminServices
 
         [Test]
         [Description("Add Subcategory")]
-        [TestCase(520, 2, "def", "pens", 4)]
-        [TestCase(521, 1, "lkj", "cello", 5)]
-        [TestCase(522, 1, "dsa", "butterflow", 3)]
+        [TestCase(900, 2, "def", "pens", 4)]
+        [TestCase(901, 1, "lkj", "cello", 5)]
+        [TestCase(902, 1, "dsa", "butterflow", 3)]
         public async Task TestAddsubcategory(int Subid, int Cid, string Sdetails, string Subname, int Gst)
         {
             try
             {
-                await _manager.AddSubcategory(new SubCategory()
+                await _manager.AddSubcategory(new SubCategoryModel()
                 {
                     Subid = Subid,
                     Cid = Cid,
@@ -72,7 +72,7 @@ namespace TestAdminServices
 
 
                 });
-                var result = _manager.getsubcategorybyid(89);
+                var result = _manager.getsubcategorybyid(Subid);
                 Assert.NotNull(result);
             }
             catch (Exception ex)
@@ -84,14 +84,14 @@ namespace TestAdminServices
 
         [Test]
         [Description("Testing Getby id for category")]
-        [TestCase(2)]
-        [TestCase(1)]
+        [TestCase(900)]
+        [TestCase(901)]
         public void TestGetbycategory_success(int cid)
         {
             try
             {
-                Category result = _manager.getCategoryid(cid);
-                Assert.IsNotNull(result, "test passed");
+                CategoryModel result = _manager.getCategoryid(cid);
+                Assert.IsNotNull(result);
             }
             catch (Exception ex)
             {
@@ -107,7 +107,7 @@ namespace TestAdminServices
         public void TestGetbycategory_Failure(int cid)
         {
 
-            Category result = _manager.getCategoryid(cid);
+            CategoryModel result = _manager.getCategoryid(cid);
             Assert.IsNull(result);
         }
 
@@ -116,8 +116,8 @@ namespace TestAdminServices
         //Success TestCase
         [Test]
         [Description("Testing get by id for  Subcategory")]
-        [TestCase(1)]
-        [TestCase(2)]
+        [TestCase(900)]
+        [TestCase(901)]
         public void TestGetbysubcategory_success(int subid)
         {
             try
@@ -134,8 +134,8 @@ namespace TestAdminServices
         //Failure TestCase
         [Test]
         [Description("Testing get by id for  Subcategory")]
-        [TestCase(108)]
-        [TestCase(171)]
+        [TestCase(1000)]
+        [TestCase(1002)]
         public void TestGetbysubcategory_Failure(int subid)
         {
             try
@@ -153,8 +153,7 @@ namespace TestAdminServices
         //Testing Delete Category
         [Test]
         [Description("Testing delete by id for  category")]
-        [TestCase(8)]
-        [TestCase(9)]
+        [TestCase(902)]
         public void TestDelete_Success(int cid)
         {
             try
@@ -171,8 +170,8 @@ namespace TestAdminServices
         //Testing Delete subCategory
         [Test]
         [Description("Testing delete by id for  subcategory")]
-        [TestCase(0)]
-        [TestCase(10)]
+      
+        [TestCase(902)]
         public void TestDeleteSubcategory_Success(int subid)
         {
             try
@@ -259,10 +258,10 @@ namespace TestAdminServices
         {
             try
             {
-                var cId = 50;
+                var cId = 55;
                 var cName = "books";
                 var CDetail = "all books";
-                var cat = new Category { Cid = cId, Cname = cName, Cdetails = CDetail };
+                var cat = new CategoryModel { Cid = cId, Cname = cName, Cdetails = CDetail };
                 var mock = new Mock<IManager>();
                 mock.Setup(x => x.AddCategory(cat));
                 var result = mock.Setup(x => x.getCategoryid(cat.Cid));
@@ -282,10 +281,10 @@ namespace TestAdminServices
         {
             try
             {
-                Category cat = _manager.getCategoryid(2);
+                CategoryModel cat = _manager.getCategoryid(2);
                 cat.Cdetails = "Buy best of best";
                 await _manager.updatecategory(cat);
-                Category cat1 = _manager.getCategoryid(2);
+                CategoryModel cat1 = _manager.getCategoryid(2);
                 Assert.AreSame(cat, cat1);
             }
             catch (Exception ex)
@@ -297,20 +296,19 @@ namespace TestAdminServices
         //Testing update subcategory
         [Test]
         [TestCase(1, 2, "def", "pen", 4)]
-        [TestCase(2, 1, "lkj", "cellopens", 5)]
         [TestCase(3, 1, "dsa", "butter", 3)]
         [Description("update subCategory")]
         public async Task UpdateSubCategory(int Subid, int Cid, string Sdetails, string Subname, int Gst)
         {
             try
             {
-                SubCategory subcat = _manager.getsubcategorybyid(Subid);
+                SubCategoryModel subcat = _manager.getsubcategorybyid(Subid);
                 subcat.Subid = Subid;
                 subcat.Subname = Subname;
                 subcat.Sdetails = Sdetails;
                 subcat.Gst = Gst;
                 await _manager.updatesubcategory(subcat);
-                SubCategory subcat1 = _manager.getsubcategorybyid(Subid);
+                SubCategoryModel subcat1 = _manager.getsubcategorybyid(Subid);
                 Assert.AreSame(subcat, subcat1);
 
 
@@ -326,7 +324,7 @@ namespace TestAdminServices
         {
             try
             {
-                Category cat = new Category() { Cid = 2};
+                CategoryModel cat = new CategoryModel() { Cid = 2};
                 var mock = new Mock<IAdminRepository>();
                 mock.Setup(x => x.updatecategory(cat)).ReturnsAsync(true);
                 AdminManager mg = new AdminManager(mock.Object);

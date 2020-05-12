@@ -1,4 +1,5 @@
 ﻿using AdminCategoryService.Entities;
+using AdminCategoryService.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -6,18 +7,18 @@ namespace AdminCategoryService.Manager
 {
     public interface IManager
     {
-        List<Category> GetAllCategories();
-        List<SubCategory> GetAllSubcategories();
-        Task<bool> AddCategory(Category obj);
-        Task<bool> AddSubcategory(SubCategory obj);
-        Category getCategoryid(int cid);
-        SubCategory getsubcategorybyid(int subid);
+        List<CategoryModel> GetAllCategories();
+        List<SubCategoryModel> GetAllSubcategories();
+        Task<bool> AddCategory(CategoryModel obj);
+        Task<bool> AddSubcategory(SubCategoryModel obj);
+        CategoryModel getCategoryid(int cid);
+        SubCategoryModel getsubcategorybyid(int subid);
         string DeletCategory(int cid);
         string DeletSubCategory(int subid);
-        Task<bool> updatecategory(Category obj);
-        Task<bool> updatesubcategory(SubCategory obj);
-        List<Seller> GetAllSellers();
-        List<Users> GetAllUsers();
+        Task<bool> updatecategory(CategoryModel obj);
+        Task<bool> updatesubcategory(SubCategoryModel obj);
+        List<SellerModel> GetAllSellers();
+        List<UserModel> GetAllUsers();
 
     }
 }

@@ -1,4 +1,5 @@
 ﻿using AdminCategoryService.Entities;
+using AdminCategoryService.Models;
 using AdminCategoryService.Repository;
 using System;
 using System.Collections.Generic;
@@ -17,7 +18,7 @@ namespace AdminCategoryService.Manager
             _repo = repo;
         }
 
-        public async Task<bool> AddCategory(Category obj)
+        public async Task<bool> AddCategory(CategoryModel obj)
         {
             try
             {
@@ -32,7 +33,7 @@ namespace AdminCategoryService.Manager
 
         }
 
-        public async Task<bool> AddSubcategory(SubCategory obj)
+        public async Task<bool> AddSubcategory(SubCategoryModel obj)
         {
                var x= await _repo.AddSubcategory(obj);
             if (x)
@@ -54,11 +55,11 @@ namespace AdminCategoryService.Manager
             return "subcategory deleted";
         }
 
-        public List<Category> GetAllCategories()
+        public List<CategoryModel> GetAllCategories()
         {
             try
             {
-                List<Category> cat = _repo.GetAllCategories();
+                List<CategoryModel> cat = _repo.GetAllCategories();
                 return cat;
             }
             catch (Exception ex)
@@ -67,17 +68,17 @@ namespace AdminCategoryService.Manager
             }
         }
 
-        public List<Seller> GetAllSellers()
+        public List<SellerModel> GetAllSellers()
         {
-            List<Seller> seller = _repo.GetAllSellers();
+            List<SellerModel> seller = _repo.GetAllSellers();
             return seller;
         }
 
-        public List<SubCategory> GetAllSubcategories()
+        public List<SubCategoryModel> GetAllSubcategories()
         {
             try
             {
-                List<SubCategory> subcat = _repo.GetAllSubcategories().ToList();
+                List<SubCategoryModel> subcat = _repo.GetAllSubcategories().ToList();
                 if (subcat.Count != 0)
                     return subcat;
                 else
@@ -89,17 +90,17 @@ namespace AdminCategoryService.Manager
             }
         }
 
-        public List<Users> GetAllUsers()
+        public List<UserModel> GetAllUsers()
         {
-            List<Users> users = _repo.GetAllUsers();
+            List<UserModel> users = _repo.GetAllUsers();
             return users;
         }
 
-        public Category getCategoryid(int cid)
+        public CategoryModel getCategoryid(int cid)
         {
             try
             {
-                Category cat = _repo.getCategoryid(cid);
+                CategoryModel cat = _repo.getCategoryid(cid);
                 if (cat != null)
                 {
                     return cat;
@@ -114,11 +115,11 @@ namespace AdminCategoryService.Manager
 
         }
 
-        public SubCategory getsubcategorybyid(int subid)
+        public SubCategoryModel getsubcategorybyid(int subid)
         {
             try
             {
-                SubCategory subcat = _repo.getsubcategorybyid(subid);
+                SubCategoryModel subcat = _repo.getsubcategorybyid(subid);
                 if (subcat != null)
                 {
                     return subcat;
@@ -132,7 +133,7 @@ namespace AdminCategoryService.Manager
             }
         }
 
-        public async Task<bool> updatecategory(Category obj)
+        public async Task<bool> updatecategory(CategoryModel obj)
         {
             try
             {
@@ -150,7 +151,7 @@ namespace AdminCategoryService.Manager
             }
         }
 
-        public async Task<bool> updatesubcategory(SubCategory obj)
+        public async Task<bool> updatesubcategory(SubCategoryModel obj)
         {
             try
             {

@@ -1,4 +1,5 @@
 ﻿using AdminCategoryService.Entities;
+using AdminCategoryService.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace AdminCategoryService.Repository
         {
             _context = context;
         }
-        public async Task<bool> AddCategory(Category obj)
+        public async Task<bool> AddCategory(CategoryModel obj)
         {
             try
             {
@@ -41,11 +42,20 @@ namespace AdminCategoryService.Repository
         }
 
 
-        public async Task<bool> AddSubcategory(SubCategory obj)
+        public async Task<bool> AddSubcategory(SubCategoryModel obj)
         {
             try
             {
-                _context.Add(obj);
+                SubCategory cat = new SubCategory();
+                if (obj != null)
+                {
+                    cat.Cid = obj.Cid;
+                    cat.Subid = obj.Subid;
+                    cat.Subname = obj.Subname;
+                    cat.Sdetails = obj.Sdetails;
+                    cat.Gst = obj.Gst;
+                }
+                _context.Add(cat);
                 await _context.SaveChangesAsync();
                  return true;
               
@@ -56,57 +66,88 @@ namespace AdminCategoryService.Repository
             }
         }
 
-        public void DeletCategory(int cid)
+        public void DeletCategory(int Cid)
         {
-            Category c = _context.Category.SingleOrDefault(e => e.Cid == cid);
+            Category c = _context.Category.SingleOrDefault(e => e.Cid == Cid);
             _context.Remove(c);
             _context.SaveChanges();
         }
 
 
-        public void DeletSubCategory(int subid)
+        public void DeletSubCategory(int Subid)
         {
-            SubCategory c = _context.SubCategory.SingleOrDefault(e => e.Subid == subid);
-
+            SubCategory c = _context.SubCategory.SingleOrDefault(e => e.Subid == Subid);
             _context.Remove(c);
             _context.SaveChanges();
 
         }
-        public List<Category> GetAllCategories()
+        public List<CategoryModel> GetAllCategories()
         {
-            List<Category> c = _context.Category.ToList();
+            List<CategoryModel> c = new List<CategoryModel>();
+            List<Category> cat = _context.Category.ToList();
+            foreach (var k in cat)
+            {
+                c.Add(new CategoryModel() { Cid = k.Cid, Cname = k.Cname, Cdetails = k.Cdetails });
+            }
+
             return c;
 
         }
 
-        public List<SubCategory> GetAllSubcategories()
+        public List<SubCategoryModel> GetAllSubcategories()
         {
 
-            List<Entities.SubCategory> c = _context.SubCategory.ToList();
-            return c;
+            List<SubCategoryModel> c = new List<SubCategoryModel>();
+            List<SubCategory> cat = _context.SubCategory.ToList();
+            foreach (var k in cat)
+            {
+                c.Add(new SubCategoryModel() { Subid=k.Subid, Cid=k.Cid, Subname=k.Sdetails, Gst=k.Gst });
+            }
+
+            return  c;
 
 
 
         }
 
-        public Category getCategoryid(int cid)
+        public CategoryModel getCategoryid(int Cid)
         {
-            return _context.Category.SingleOrDefault(e => e.Cid == cid);
+           
+                CategoryModel cat = new CategoryModel();
+            Category x= _context.Category.SingleOrDefault(e => e.Cid == Cid);
+                cat.Cid = x.Cid;
+                cat.Cname = x.Cname;
+                cat.Cdetails = x.Cdetails;
+                return cat;
+         
+           
+                
+
+        }
+
+        public SubCategoryModel getsubcategorybyid(int Subid)
+        {
+            SubCategoryModel cat = new SubCategoryModel();
+            SubCategory c = _context.SubCategory.SingleOrDefault(e => e.Subid ==Subid);
+            cat.Cid = c.Cid;
+            cat.Subid = c.Subid;
+            cat.Subname = c.Subname;
+            cat.Sdetails = c.Sdetails;
+            cat.Gst = c.Gst;
+            return cat;
 
 
         }
 
-        public SubCategory getsubcategorybyid(int subid)
-        {
-            return _context.SubCategory.Find(subid);
-
-        }
-
-        public async Task<bool> updatecategory(Category obj)
+        public async Task<bool> updatecategory(CategoryModel obj)
         {
             try
             {
-                _context.Category.Update(obj);
+                Category cat = new Category();
+                cat.Cid = obj.Cid;
+                cat.Cname = obj.Cname;
+                cat.Cdetails = obj.Cdetails;
+                _context.Category.Update(cat);
                 await _context.SaveChangesAsync();
                 return true;
 
@@ -118,12 +159,18 @@ namespace AdminCategoryService.Repository
             }
         }
 
-        public async Task<bool> updatesubcategory(SubCategory obj)
+        public async Task<bool> updatesubcategory(SubCategoryModel obj)
         {
 
             try
             {
-                _context.SubCategory.Update(obj);
+                SubCategory cat = new SubCategory();
+                cat.Cid = obj.Cid;
+                cat.Subid = obj.Subid;
+                cat.Subname = obj.Subname;
+                cat.Sdetails = obj.Sdetails;
+                cat.Gst = obj.Gst;
+                _context.SubCategory.Update(cat);
                 await _context.SaveChangesAsync();
 
                 return true;
@@ -136,16 +183,28 @@ namespace AdminCategoryService.Repository
             }
 
         }
-        public List<Seller> GetAllSellers()
+        public List<SellerModel> GetAllSellers()
         {
-            List<Seller> seller = _context.Seller.ToList();
-            return seller;
+            List<SellerModel> c = new List<SellerModel>();
+            List<Seller> cat = _context.Seller.ToList();
+            foreach (var k in cat)
+            {
+                c.Add(new SellerModel() { SellerId=k.SellerId, SellerName=k.SellerName, KycAproval=k.KycAproval  });
+            }
+
+            return c;
 
         }
-        public List<Users> GetAllUsers()
+        public List<UserModel> GetAllUsers()
         {
-            List<Users> user = _context.Users.ToList();
-            return user;
+            List<UserModel> c = new List<UserModel>();
+            List<Users> cat = _context.Users.ToList();
+            foreach (var k in cat)
+            {
+                c.Add(new UserModel() { Userid=k.Userid, Username=k.Username, Nooforders=k.Nooforders, Failedorders=k.Failedorders});
+            }
+
+            return c;
 
         }
     }

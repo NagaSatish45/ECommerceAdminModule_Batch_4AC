@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using AdminCategoryService.Entities;
 using AdminCategoryService.Manager;
+using AdminCategoryService.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -28,7 +29,7 @@ namespace AdminCategoryService.Controllers
             // </summary>
             [HttpPost]
             [Route("AddCategory")]
-            public async Task<IActionResult> Addcategory(Category obj)
+            public async Task<IActionResult> Addcategory(CategoryModel obj)
             {
                
                var x = await _manager.AddCategory(obj);
@@ -48,7 +49,7 @@ namespace AdminCategoryService.Controllers
             // </summary>
             [HttpPost]
             [Route("AddSubCategory")]
-            public async Task<IActionResult> Addsubcategory(SubCategory obj)
+            public async Task<IActionResult> Addsubcategory(SubCategoryModel obj)
             {
                     bool x= await _manager.AddSubcategory(obj);
             if (x)
@@ -157,7 +158,7 @@ namespace AdminCategoryService.Controllers
 
             [HttpPut]
             [Route("updatecategory")]
-            public async Task<IActionResult> updatecategory(Category obj)
+            public async Task<IActionResult> updatecategory(CategoryModel obj)
             {
 
                 await _manager.updatecategory(obj);
@@ -170,7 +171,7 @@ namespace AdminCategoryService.Controllers
             // </summary>
             [HttpPut]
             [Route("updatesubcategory")]
-            public async Task<IActionResult> updatesubcategory(SubCategory obj)
+            public async Task<IActionResult> updatesubcategory(SubCategoryModel obj)
             {
 
                 await _manager.updatesubcategory(obj);
