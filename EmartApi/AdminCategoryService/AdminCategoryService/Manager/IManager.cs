@@ -1,5 +1,4 @@
-﻿using AdminCategoryService.Entities;
-using AdminCategoryService.Models;
+﻿using AdminCategoryService.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

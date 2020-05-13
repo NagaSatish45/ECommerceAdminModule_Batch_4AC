@@ -1,5 +1,4 @@
 ﻿using AdminCategoryService.Controllers;
-using AdminCategoryService.Entities;
 using AdminCategoryService.Manager;
 using AdminCategoryService.Models;
 using Microsoft.Extensions.Logging;

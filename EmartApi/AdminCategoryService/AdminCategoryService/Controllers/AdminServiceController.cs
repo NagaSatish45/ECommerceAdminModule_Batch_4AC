@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using AdminCategoryService.Entities;
 using AdminCategoryService.Manager;
 using AdminCategoryService.Models;
 using Microsoft.AspNetCore.Mvc;

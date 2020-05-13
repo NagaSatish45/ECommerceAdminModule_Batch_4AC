@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
+﻿
 namespace AdminCategoryService.Entities
 {
     public partial class SubCategory

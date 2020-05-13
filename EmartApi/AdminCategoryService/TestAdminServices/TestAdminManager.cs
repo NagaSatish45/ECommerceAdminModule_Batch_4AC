@@ -1,23 +1,25 @@
-﻿using AdminCategoryService.Entities;
-using AdminCategoryService.Manager;
+﻿using AdminCategoryService.Manager;
 using AdminCategoryService.Models;
 using AdminCategoryService.Repository;
 using Moq;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace TestAdminServices
 {
     class TestAdminManager
     {
-        AdminManager _manager;
+       AdminManager _manager;
+        Mock<IAdminRepository> _iadmin;
+        
         [SetUp]
         public void setup()
         {
-            _manager = new AdminManager(new AdminRepositoty(new EmartDBContext()));
+     
+            _iadmin = new Mock<IAdminRepository>();
+            _manager = new AdminManager(_iadmin.Object);
 
         }
         [TearDown]
@@ -29,20 +31,23 @@ namespace TestAdminServices
         //Testing Add Category Success
         [Test]
         [Description("get category")]
-        [TestCase(903, "electronics", "electric gadgets")]
-        [TestCase(904  , "clothings", "Wholesale")]
-        [TestCase(905, "HomeNeeds", "All home needies")]
+        [TestCase(906,"electronics","electric gadgets")]
+        [TestCase(907,"clothings","Wholesale")]
+        [TestCase(908,"HomeNeeds","All home needies")]
         public async Task TestAddCategory_success(int cid, string cname, string cdetails)
         {
             try
             {
-                CategoryModel cat = new CategoryModel();
-                cat.Cid = cid;
-                cat.Cname = cname;
-                cat.Cdetails = cdetails;
-                await _manager.AddCategory(cat);
-                var x = _manager.getCategoryid(cat.Cid);
-                Assert.NotNull(x);
+                CategoryModel cat = new CategoryModel
+                {
+                    Cid = cid,
+                    Cname = cname,
+                    Cdetails = cdetails
+                };
+               _iadmin.Setup(x => x.AddCategory(cat)).ReturnsAsync(true);
+                AdminManager mg = new AdminManager(_iadmin.Object);
+                var res= await mg.AddCategory(cat);
+                Assert.AreEqual(true,res);
             }
             catch (Exception ex)
             {
@@ -55,25 +60,25 @@ namespace TestAdminServices
 
         [Test]
         [Description("Add Subcategory")]
-        [TestCase(900, 2, "def", "pens", 4)]
-        [TestCase(901, 1, "lkj", "cello", 5)]
-        [TestCase(902, 1, "dsa", "butterflow", 3)]
+        [TestCase(903, 2, "def", "pens", 4)]
+        [TestCase(904, 1, "lkj", "cello", 5)]
+        [TestCase(905, 1, "dsa", "butterflow", 3)]
         public async Task TestAddsubcategory(int Subid, int Cid, string Sdetails, string Subname, int Gst)
         {
             try
             {
-                await _manager.AddSubcategory(new SubCategoryModel()
+                 SubCategoryModel subcat= new SubCategoryModel
                 {
                     Subid = Subid,
                     Cid = Cid,
                     Sdetails = Sdetails,
                     Subname = Subname,
                     Gst = Gst,
-
-
-                });
-                var result = _manager.getsubcategorybyid(Subid);
-                Assert.NotNull(result);
+                };
+                _iadmin.Setup(x => x.AddSubcategory(subcat)).ReturnsAsync(true);
+                AdminManager mg = new AdminManager(_iadmin.Object);
+                var result =await  mg.AddSubcategory(subcat);
+                Assert.AreEqual(true, result);
             }
             catch (Exception ex)
             {
@@ -84,14 +89,16 @@ namespace TestAdminServices
 
         [Test]
         [Description("Testing Getby id for category")]
-        [TestCase(900)]
-        [TestCase(901)]
-        public void TestGetbycategory_success(int cid)
+        [TestCase(1)]
+        [TestCase(2)]
+        public void TestGetbycategory_success(int Cid)
         {
             try
             {
-                CategoryModel result = _manager.getCategoryid(cid);
-                Assert.IsNotNull(result);
+                CategoryModel cat = new CategoryModel();
+                _iadmin.Setup(x => x.getCategoryid(Cid)).Returns(cat);
+                var result = _manager.getCategoryid(Cid);
+                Assert.AreEqual(cat, result);
             }
             catch (Exception ex)
             {
@@ -102,13 +109,15 @@ namespace TestAdminServices
 
         //Failure Test Cases
         [Test]
-        [TestCase(105)]
-        [TestCase(999)]
-        public void TestGetbycategory_Failure(int cid)
+        [TestCase(1,999)]
+        [TestCase(2,888)]
+        public void TestGetbycategory_Failure(int cid,int Cid)
         {
 
-            CategoryModel result = _manager.getCategoryid(cid);
-            Assert.IsNull(result);
+            CategoryModel cat = new CategoryModel();
+            _iadmin.Setup(x => x.getCategoryid(cid)).Returns(cat);
+            var result = _manager.getCategoryid(Cid);
+            Assert.AreNotEqual(cat, result);
         }
 
 
@@ -116,14 +125,18 @@ namespace TestAdminServices
         //Success TestCase
         [Test]
         [Description("Testing get by id for  Subcategory")]
-        [TestCase(900)]
-        [TestCase(901)]
-        public void TestGetbysubcategory_success(int subid)
+        [TestCase(93)]
+        [TestCase(94)]
+        public void TestGetbysubcategory_success(int Subid)
         {
             try
             {
-                var result = _manager.getsubcategorybyid(subid);
-                Assert.IsNotNull(result);
+
+                SubCategoryModel subcat = new SubCategoryModel();
+                _iadmin.Setup(x => x.getsubcategorybyid(Subid)).Returns(subcat);
+                AdminManager mg = new AdminManager(_iadmin.Object);
+                var result = mg.getsubcategorybyid(Subid);
+                Assert.AreEqual(subcat,result);
             }
             catch (Exception ex)
             {
@@ -134,14 +147,17 @@ namespace TestAdminServices
         //Failure TestCase
         [Test]
         [Description("Testing get by id for  Subcategory")]
-        [TestCase(1000)]
-        [TestCase(1002)]
-        public void TestGetbysubcategory_Failure(int subid)
+        [TestCase(1000,93)]
+        [TestCase(1002,94)]
+        public void TestGetbysubcategory_Failure(int subid,int Subid)
         {
             try
             {
-                var result = _manager.getsubcategorybyid(subid);
-                Assert.IsNull(result);
+                SubCategoryModel subcat = new SubCategoryModel();
+                _iadmin.Setup(x => x.getsubcategorybyid(subid)).Returns(subcat);
+                AdminManager mg = new AdminManager(_iadmin.Object);
+                var result = mg.getsubcategorybyid(Subid);
+                Assert.AreNotEqual(subcat, result);
             }
             catch (Exception ex)
             {
@@ -153,7 +169,7 @@ namespace TestAdminServices
         //Testing Delete Category
         [Test]
         [Description("Testing delete by id for  category")]
-        [TestCase(902)]
+        [TestCase(16)]
         public void TestDelete_Success(int cid)
         {
             try
@@ -171,7 +187,7 @@ namespace TestAdminServices
         [Test]
         [Description("Testing delete by id for  subcategory")]
       
-        [TestCase(902)]
+        [TestCase(86)]
         public void TestDeleteSubcategory_Success(int subid)
         {
             try
@@ -185,47 +201,54 @@ namespace TestAdminServices
                 Assert.Fail(ex.InnerException.Message);
             }
         }
-
+        //Get All category
         [Test]
         [Description("Getcategorylist")]
         public void TestGetcategorylist()
         {
             try
             {
-                var result = _manager.GetAllCategories();
-                Assert.NotNull(result);
-                Assert.Greater(result.Count, 0);
+                List<CategoryModel> cat = new List<CategoryModel>();
+                _iadmin.Setup(x => x.GetAllCategories()).Returns(cat);
+                AdminManager mg = new AdminManager(_iadmin.Object);
+                var result = mg.GetAllCategories();
+                Assert.AreEqual(cat,result);
             }
             catch (Exception ex)
             {
                 Assert.Fail(ex.InnerException.Message);
             }
         }
-
+        //Test all USersLIst
         [Test]
         [Description("GetUserslist")]
         public void TestGetUserslist()
         {
             try
             {
-                var result = _manager.GetAllUsers();
-                Assert.NotNull(result);
-                Assert.Greater(result.Count, 0);
+                List<UserModel> user = new List<UserModel>();
+                _iadmin.Setup(x => x.GetAllUsers()).Returns(user);
+                AdminManager mg = new AdminManager(_iadmin.Object);
+                var result = mg.GetAllUsers();
+                Assert.AreEqual(user,result);
             }
             catch (Exception ex)
             {
                 Assert.Fail(ex.InnerException.Message);
             }
         }
+        //Test All Sellers 
         [Test]
         [Description("GetSellerlist")]
         public void TestGetsellerlist()
         {
             try
             {
-                var result = _manager.GetAllSellers();
-                Assert.NotNull(result);
-                Assert.Greater(result.Count, 0);
+                List<SellerModel> seller = new List<SellerModel>();
+                _iadmin.Setup(x => x.GetAllSellers()).Returns(seller);
+                AdminManager mg = new AdminManager(_iadmin.Object);
+                var result = mg.GetAllSellers();
+                Assert.AreEqual(seller, result);
             }
             catch (Exception ex)
             {
@@ -233,17 +256,18 @@ namespace TestAdminServices
             }
         }
 
-
+        //Test ALL subCategory LIst
         [Test]
-
         [Description("Getgetsubcategorylist")]
         public void TestGetsubcategorylist_success()
         {
             try
             {
-                var result = _manager.GetAllSubcategories();
-                Assert.NotNull(result);
-                Assert.Greater(result.Count, 0);
+                List<SubCategoryModel> sub = new List<SubCategoryModel>();
+                _iadmin.Setup(x => x.GetAllSubcategories()).Returns(sub);
+                AdminManager mg = new AdminManager(_iadmin.Object);
+                var result = mg.GetAllSubcategories();
+                Assert.AreEqual(sub,result);
             }
             catch (Exception ex)
             {
@@ -251,14 +275,14 @@ namespace TestAdminServices
             }
 
         }
-        // [TestCase)]  //setup teardown order
+        // MOck add data to category
         [Test]
         [Description("to test the mock data")]
         public void AddMockCategory()
         {
             try
             {
-                var cId = 55;
+                var cId = 93;
                 var cName = "books";
                 var CDetail = "all books";
                 var cat = new CategoryModel { Cid = cId, Cname = cName, Cdetails = CDetail };
@@ -274,43 +298,22 @@ namespace TestAdminServices
 
 
         }
-        //Testing Update category
-        [Test]
-        [Description("update Category")]
-        public async Task UpdateCategory()
-        {
-            try
-            {
-                CategoryModel cat = _manager.getCategoryid(2);
-                cat.Cdetails = "Buy best of best";
-                await _manager.updatecategory(cat);
-                CategoryModel cat1 = _manager.getCategoryid(2);
-                Assert.AreSame(cat, cat1);
-            }
-            catch (Exception ex)
-            {
-                Assert.Fail(ex.InnerException.Message);
-            }
-
-        }
         //Testing update subcategory
         [Test]
-        [TestCase(1, 2, "def", "pen", 4)]
+        [TestCase(1113, 2, "def", "pen", 4)]
         [TestCase(3, 1, "dsa", "butter", 3)]
         [Description("update subCategory")]
         public async Task UpdateSubCategory(int Subid, int Cid, string Sdetails, string Subname, int Gst)
         {
             try
             {
-                SubCategoryModel subcat = _manager.getsubcategorybyid(Subid);
-                subcat.Subid = Subid;
-                subcat.Subname = Subname;
-                subcat.Sdetails = Sdetails;
-                subcat.Gst = Gst;
-                await _manager.updatesubcategory(subcat);
-                SubCategoryModel subcat1 = _manager.getsubcategorybyid(Subid);
-                Assert.AreSame(subcat, subcat1);
-
+                SubCategoryModel subcat = new SubCategoryModel() {  Subid=Subid };
+                var mock = new Mock<IAdminRepository>();
+                mock.Setup(x => x.updatesubcategory(subcat)).ReturnsAsync(true);
+                AdminManager mg = new AdminManager(mock.Object);
+                var result = await mg.updatesubcategory(subcat);
+                Assert.IsNotNull(result);
+                Assert.AreEqual(true,result);
 
             }
             catch (Exception ex)
@@ -318,6 +321,7 @@ namespace TestAdminServices
                 Assert.Fail(ex.InnerException.Message);
             }
         }
+        //update category
         [Test]
         [Description("testing buyer update category")]
         public async Task updatecategory_Successfull()

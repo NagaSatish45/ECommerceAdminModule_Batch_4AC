@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "t8txBNSIkD5pTsTyyM+yUtPe+2O2Av6GsKrR193u3sN1yvX0RvVdjuRaUseD3oqF5A2+1jukivUcjjtkHO4ceg==",
+  "dgSpecHash": "Z9uCIxE2Nuh/1fPp51moC75HJlnc/eIYb2EOvaX480XHpSLTIW/3ZyH7xsJHqEsD6ElvFWNahIjp/10+JfoH2g==",
   "success": true,
   "projectFilePath": "G:\\CTS45\\angular\\EmartApi\\AdminCategoryService\\TestAdminServices\\TestAdminServices.csproj",
   "expectedPackageFiles": [
@@ -28,6 +28,7 @@
     "C:\\Users\\windows\\.nuget\\packages\\microsoft.entityframeworkcore\\3.1.3\\microsoft.entityframeworkcore.3.1.3.nupkg.sha512",
     "C:\\Users\\windows\\.nuget\\packages\\microsoft.entityframeworkcore.abstractions\\3.1.3\\microsoft.entityframeworkcore.abstractions.3.1.3.nupkg.sha512",
     "C:\\Users\\windows\\.nuget\\packages\\microsoft.entityframeworkcore.analyzers\\3.1.3\\microsoft.entityframeworkcore.analyzers.3.1.3.nupkg.sha512",
+    "C:\\Users\\windows\\.nuget\\packages\\microsoft.entityframeworkcore.inmemory\\3.1.3\\microsoft.entityframeworkcore.inmemory.3.1.3.nupkg.sha512",
     "C:\\Users\\windows\\.nuget\\packages\\microsoft.entityframeworkcore.relational\\3.1.3\\microsoft.entityframeworkcore.relational.3.1.3.nupkg.sha512",
     "C:\\Users\\windows\\.nuget\\packages\\microsoft.entityframeworkcore.sqlserver\\3.1.3\\microsoft.entityframeworkcore.sqlserver.3.1.3.nupkg.sha512",
     "C:\\Users\\windows\\.nuget\\packages\\microsoft.extensions.apidescription.server\\3.0.0\\microsoft.extensions.apidescription.server.3.0.0.nupkg.sha512",

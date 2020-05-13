@@ -208,6 +208,7 @@ G:\CTS45\angular\EmartApi\AdminCategoryService\TestAdminServices\obj\Debug\netco
 G:\CTS45\angular\EmartApi\AdminCategoryService\TestAdminServices\bin\Debug\netcoreapp3.1\TestAdminServices.pdb
 G:\CTS45\angular\EmartApi\AdminCategoryService\TestAdminServices\bin\Debug\netcoreapp3.1\Castle.Core.dll
 G:\CTS45\angular\EmartApi\AdminCategoryService\TestAdminServices\bin\Debug\netcoreapp3.1\Moq.dll
-G:\CTS45\angular\EmartApi\AdminCategoryService\TestAdminServices\obj\Debug\netcoreapp3.1\TestAdminServices.csproj.CoreCompileInputs.cache
 G:\CTS45\angular\EmartApi\AdminCategoryService\TestAdminServices\obj\Debug\netcoreapp3.1\TestAdminServices.dll
 G:\CTS45\angular\EmartApi\AdminCategoryService\TestAdminServices\obj\Debug\netcoreapp3.1\TestAdminServices.pdb
+G:\CTS45\angular\EmartApi\AdminCategoryService\TestAdminServices\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.InMemory.dll
+G:\CTS45\angular\EmartApi\AdminCategoryService\TestAdminServices\obj\Debug\netcoreapp3.1\TestAdminServices.csproj.CoreCompileInputs.cache

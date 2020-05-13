@@ -1,9 +1,7 @@
-﻿using AdminCategoryService.Entities;
-using AdminCategoryService.Models;
+﻿using AdminCategoryService.Models;
 using AdminCategoryService.Repository;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace AdminCategoryService.Manager
@@ -35,11 +33,8 @@ namespace AdminCategoryService.Manager
 
         public async Task<bool> AddSubcategory(SubCategoryModel obj)
         {
-               var x= await _repo.AddSubcategory(obj);
-            if (x)
+               await _repo.AddSubcategory(obj);
                 return true;
-            else
-                return false;
            
         }
 
@@ -60,7 +55,10 @@ namespace AdminCategoryService.Manager
             try
             {
                 List<CategoryModel> cat = _repo.GetAllCategories();
-                return cat;
+                if (cat.Count!= 0)
+                    return cat;
+                else
+                    return null;
             }
             catch (Exception ex)
             {
@@ -71,18 +69,19 @@ namespace AdminCategoryService.Manager
         public List<SellerModel> GetAllSellers()
         {
             List<SellerModel> seller = _repo.GetAllSellers();
-            return seller;
+            if (seller.Count != 0)
+                return seller;
+            else
+                return null;
         }
 
         public List<SubCategoryModel> GetAllSubcategories()
         {
             try
             {
-                List<SubCategoryModel> subcat = _repo.GetAllSubcategories().ToList();
-                if (subcat.Count != 0)
+                List<SubCategoryModel> subcat = _repo.GetAllSubcategories();
                     return subcat;
-                else
-                    return null;
+               
             }
             catch (Exception ex)
             {
@@ -101,12 +100,15 @@ namespace AdminCategoryService.Manager
             try
             {
                 CategoryModel cat = _repo.getCategoryid(cid);
-                if (cat != null)
+                if (cat == null)
+                {
+                    return null;
+                }
+                else
                 {
                     return cat;
                 }
-                else
-                    return null;
+
             }
             catch (Exception ex)
             {
@@ -120,12 +122,12 @@ namespace AdminCategoryService.Manager
             try
             {
                 SubCategoryModel subcat = _repo.getsubcategorybyid(subid);
-                if (subcat != null)
+                if (subcat == null)
                 {
-                    return subcat;
+                    return null;
                 }
                 else
-                    return null;
+                    return subcat;
             }
             catch (Exception ex)
             {
