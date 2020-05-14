@@ -12,8 +12,8 @@ namespace AdminCategoryService.Manager
         Task<bool> AddSubcategory(SubCategoryModel obj);
         CategoryModel getCategoryid(int cid);
         SubCategoryModel getsubcategorybyid(int subid);
-        string DeletCategory(int cid);
-        string DeletSubCategory(int subid);
+        bool DeletCategory(int cid);
+        bool DeletSubCategory(int subid);
         Task<bool> updatecategory(CategoryModel obj);
         Task<bool> updatesubcategory(SubCategoryModel obj);
         List<SellerModel> GetAllSellers();

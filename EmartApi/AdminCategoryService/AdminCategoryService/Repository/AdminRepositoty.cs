@@ -102,16 +102,11 @@ namespace AdminCategoryService.Repository
         {
             List<CategoryModel> c = new List<CategoryModel>();
             List<Category> cat = _context.Category.ToList();
-            foreach (var k in cat)
+            foreach(var  k in cat)
             {
-                c.Add(new CategoryModel() { Cid = k.Cid, Cname = k.Cname, Cdetails = k.Cdetails });
+                c.Add(new CategoryModel{ Cid = k.Cid, Cname = k.Cname, Cdetails = k.Cdetails });
             }
-            if (c.Count > 0)
-            {
-                return c;
-            }
-            else
-                return null;
+            return c;
 
         }
 
@@ -124,12 +119,7 @@ namespace AdminCategoryService.Repository
             {
                 c.Add(new SubCategoryModel() { Subid=k.Subid, Cid=k.Cid, Subname=k.Subname, Sdetails=k.Sdetails, Gst=k.Gst });
             }
-            if (c.Count > 0)
-            {
-                return c;
-            }
-            else
-                return null;
+            return c;
 
 
 
@@ -170,14 +160,20 @@ namespace AdminCategoryService.Repository
         {
             try
             {
-                    Category cat = new Category();
+                Category cat = new Category();
+                if (obj != null)
+                {
                     cat.Cid = obj.Cid;
                     cat.Cname = obj.Cname;
                     cat.Cdetails = obj.Cdetails;
-                    _context.Category.Update(cat);
-                    await _context.SaveChangesAsync();
+                }
+                _context.Update(cat);
+                var res = await _context.SaveChangesAsync();
+                if (res > 0)
                     return true;
-            
+                else
+                    return false;
+
 
             }
             catch (Exception ex)
@@ -192,8 +188,8 @@ namespace AdminCategoryService.Repository
 
             try
             {
-               SubCategory sub = _context.SubCategory.Find(obj.Cid);
-                if (sub!=null)
+               SubCategory sub = new SubCategory();
+                if (obj!= null)
                 {
                     SubCategory cat = new SubCategory();
                     cat.Cid = obj.Cid;
@@ -201,13 +197,12 @@ namespace AdminCategoryService.Repository
                     cat.Subname = obj.Subname;
                     cat.Sdetails = obj.Sdetails;
                     cat.Gst = obj.Gst;
-                    _context.SubCategory.Update(cat);
-                    await _context.SaveChangesAsync();
-
-                    return true;
                 }
-                else
-                    return false; 
+                    _context.SubCategory.Update(sub);
+                await _context.SaveChangesAsync();
+                return true;
+
+
 
             }
             catch (Exception ex)

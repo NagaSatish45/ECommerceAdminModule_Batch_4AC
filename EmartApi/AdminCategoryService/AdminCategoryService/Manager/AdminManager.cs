@@ -38,16 +38,20 @@ namespace AdminCategoryService.Manager
            
         }
 
-        public string DeletCategory(int cid)
+        public bool DeletCategory(int cid)
         {
-            _repo.DeletCategory(cid);
-            return "Category deleted";
+            CategoryModel cat = new CategoryModel { Cid = cid };
+           var x= _repo.DeletCategory(cat.Cid);
+            if (cat.Cid==0)
+                return false;
+            else
+                return true;
         }
 
-        public string DeletSubCategory(int subid)
+        public bool DeletSubCategory(int subid)
         {
             _repo.DeletSubCategory(subid);
-            return "subcategory deleted";
+            return true;
         }
 
         public List<CategoryModel> GetAllCategories()
@@ -55,10 +59,7 @@ namespace AdminCategoryService.Manager
             try
             {
                 List<CategoryModel> cat = _repo.GetAllCategories();
-                if (cat.Count!= 0)
-                    return cat;
-                else
-                    return null;
+                return cat;
             }
             catch (Exception ex)
             {
@@ -69,10 +70,7 @@ namespace AdminCategoryService.Manager
         public List<SellerModel> GetAllSellers()
         {
             List<SellerModel> seller = _repo.GetAllSellers();
-            if (seller.Count != 0)
-                return seller;
-            else
-                return null;
+            return seller;
         }
 
         public List<SubCategoryModel> GetAllSubcategories()

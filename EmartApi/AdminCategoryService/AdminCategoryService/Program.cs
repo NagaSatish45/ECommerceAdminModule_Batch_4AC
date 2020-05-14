@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 
@@ -9,6 +10,7 @@ namespace AdminCategoryService
 {
     public static  class Program
     {
+        [ExcludeFromCodeCoverage]
         public static void Main(string[] args)
         {
             var logger = NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();

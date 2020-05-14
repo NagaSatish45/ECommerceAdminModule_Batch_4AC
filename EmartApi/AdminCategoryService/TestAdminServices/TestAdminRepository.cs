@@ -17,15 +17,16 @@ namespace TestAdminServices
         public void setup()
         {
             _builder = new DbContextOptionsBuilder<EmartDBContext>().EnableSensitiveDataLogging().UseInMemoryDatabase(Guid.NewGuid().ToString());
-            
             EmartDBContext db = new EmartDBContext(_builder.Options);
-            db.Add(new Category { Cid =641, Cname = "abc", Cdetails = "zyx" });
-            db.Add(new Category { Cid = 642, Cname = "def", Cdetails = "wvu" });
-            db.Add(new SubCategory { Subid = 1, Cid = 1, Subname = "abc", Sdetails = "adf", Gst = 6 });
-            db.Add(new SubCategory { Subid = 2, Cid = 1, Subname = "abcd", Sdetails = "asdf", Gst = 6 });
-            db.Add(new Seller { SellerId = 1, SellerName = "seller", KycAproval = "yes" });
-            db.Add(new Seller { SellerId = 2, SellerName = "seller1", KycAproval = "No" });
-
+            db.Category.Add(new Category { Cid = 641, Cname = "abc", Cdetails = "zyx" });
+            db.Category.Add(new Category { Cid = 642, Cname = "def", Cdetails = "wvu" });
+            db.SubCategory.Add(new SubCategory { Subid = 1, Cid = 1, Subname = "abc", Sdetails = "adf", Gst = 6 });
+            db.SubCategory.Add(new SubCategory { Subid = 2, Cid = 1, Subname = "abcd", Sdetails = "asdf", Gst = 6 });
+            db.Seller.Add(new Seller { SellerId = 1, SellerName = "seller", KycAproval = "yes" });
+            db.Seller.Add(new Seller { SellerId = 2, SellerName = "seller1", KycAproval = "No" });
+            db.Users.Add(new Users { Userid = 1, Username = "user", Nooforders = 10, Failedorders = 5 });
+            db.Users.Add(new Users { Userid = 2, Username = "user2", Nooforders = 10, Failedorders = 3 });
+            db.SaveChanges();
             _repo = new AdminRepositoty(db);
 
         }
@@ -44,9 +45,9 @@ namespace TestAdminServices
         [Description("Add category")]
        // [TestCase(986, "dsa", "butterflow")]
         [TestCase(1, "dsa", "butterflow")]
-        [TestCase(2, "dsa", "butterflow")]
-        [TestCase(3, "dsa", "butterflow")]
-        [TestCase(5, "dsa", "butterflow")]
+        [TestCase(2, "dsaDG", "butter")]
+        [TestCase(3, "dsaFSGA", "flow")]
+        [TestCase(5, "dsaSF", "CELLO")]
         public async Task TestAddCategory_success(int Cid,string Cname,string Cdetails)
         {
             try
@@ -54,7 +55,7 @@ namespace TestAdminServices
                
                 var cat = new CategoryModel(){ Cid =Cid, Cname = Cname, Cdetails = Cdetails };
                 await _repo.AddCategory(cat);
-                var res = _repo.getCategoryid(Cid);
+                var res = _repo.getCategoryid(cat.Cid);
                 Assert.NotNull(res);
             }
             catch (Exception ex)
@@ -69,8 +70,7 @@ namespace TestAdminServices
         [Description("Add Subcategory")]
        // [TestCase(986, 1, "dsa", "butterflow", 3)]
         [TestCase(4,3, "dsa","butterflow", 3)]
-        [TestCase(2, 1, "dsa", "butterflow", 3)]
-        [TestCase(3, 1, "dsa", "butterflow", 3)]
+        [TestCase(3,1, "dsa", "butterflow", 3)]
         public async Task TestAddsubcategory(int Subid, int Cid, string Sdetails, string Subname, int Gst)
         {
             try
@@ -85,6 +85,7 @@ namespace TestAdminServices
 
                 var result = _repo.getsubcategorybyid(Subid);
                 Assert.NotNull(result);
+               
             }
             catch (Exception ex)
             {
@@ -154,16 +155,10 @@ namespace TestAdminServices
         [Description("Getcategorylist")]
         public void TestGetcategorylist()
         {
-            try
-            {
+            
                 var result = _repo.GetAllCategories();
-                Assert.NotNull(result);
-               Assert.GreaterOrEqual(result.Count,0);
-            }
-            catch (Exception ex)
-            {
-                Assert.Fail(ex.InnerException.Message);
-            }
+            Assert.NotNull(result);
+            Assert.GreaterOrEqual(result.Count,0);
         }
         [Test]
         [Description("GetUserslist")]
@@ -202,7 +197,6 @@ namespace TestAdminServices
 
 
         [Test]
-
         [Description("Getgetsubcategorylist")]
         public void TestGetsubcategorylist_success()
         {
@@ -220,19 +214,23 @@ namespace TestAdminServices
         }
         //Testing Update category
         [Test]
-        [TestCase(641,"defg","el")]
-        public async Task UpdateCategory(int Cid,string Cname,string Cdetails)
+        [TestCase(89, "dsa", "butterflow")]
+        public async Task UpdateCategory(int Cid, string Cname, string Cdetails)
         {
             try
             {
 
 
-                CategoryModel cat = new CategoryModel();
-                cat.Cid = Cid;
-                cat.Cname = Cname;
-                cat.Cdetails = Cdetails;
-                var result = await _repo.updatecategory(cat);
-                Assert.IsTrue(result);
+                CategoryModel cat = new CategoryModel{ Cid = Cid, Cname = Cname, Cdetails = Cdetails };
+                await _repo.AddCategory(cat);
+                var res = _repo.getCategoryid(Cid);
+                res.Cid = 89;
+                res.Cdetails = "hask";
+                res.Cname = "xyz";
+                await _repo.updatecategory(res);
+                var chg = _repo.getCategoryid(Cid);
+                Assert.AreSame(res.Cid,chg.Cid);
+              
 
             }
             catch (Exception ex)
